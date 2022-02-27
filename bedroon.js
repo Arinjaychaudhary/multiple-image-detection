@@ -1,4 +1,5 @@
 img="";
+status="";
 function preload() {
 img = loadImage("depositphotos_39844179-stock-photo-modern-interior-bedroom.jpg");
 }
@@ -7,6 +8,9 @@ img = loadImage("depositphotos_39844179-stock-photo-modern-interior-bedroom.jpg"
 function setup(){
 canvas=createCanvas(640,420);
 canvas.center();
+
+objectDetector=ml5.objectDetector('cocossd',modelLoaded);
+document.getElementById("status").innerHTML="Status:Objects Detected";
 }
 
 function draw() {
@@ -30,4 +34,8 @@ function draw() {
    text("big-lamp",245,80);
    noFill();
    rect(240,70,130,50);
+}
+
+function modelLoaded () {
+console.log("Model Loaded Successfully");
 }

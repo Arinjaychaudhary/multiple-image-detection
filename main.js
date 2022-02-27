@@ -13,3 +13,7 @@ function bottle(){
 function fruit(){
     window.location="fruit.html";
 }
+
+function back(){
+window.location="index.html";
+}
