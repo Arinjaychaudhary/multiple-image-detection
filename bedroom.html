@@ -25,50 +25,67 @@
 
 <button onclick="back()" class="btn btn-success back">Back</button>
 </center>
-<script >img="";
-  status="";
-  function preload() {
-  img = loadImage("bedroom.jpg");
-  }
-  
-  
-  function setup(){
-  canvas=createCanvas(640,420);
-  canvas.center();
-  objectDetector = ml5.objectDetector('cocossd', modelLoaded);
-  document.getElementById("status").innerHTML="Status:Objects Detected";
-  }
-  
-  function draw() {
-      image(img,0,0,640,420);
-      fill("#FF0000");
-     stroke("#FF0000") ;
-     text("lamp",145,170);
-     noFill();
-     rect(140,170,30,50);
-  
-     text("lamp",500,170);
-     noFill();
-     rect(500,170,30,50);
-  
-     text("bed",245,180);
-     noFill();
-     rect(140,170,430,250);
-  
-  
-  
-     text("big-lamp",245,80);
-     noFill();
-     rect(240,70,130,50);
-  }
-  
-  function modelLoaded () {
-  console.log("Model Loaded Successfully");
-  }
+<script >
+status="";
+img="";
+objects=[];
+function preload() {
+img = loadImage("bedroom.jpg");
+}
 
-  function back(){
-    window.location="index.html";
+function back(){
+  window.location="index.html";
+}
+
+function setup(){
+canvas=createCanvas(740,520);
+canvas.center();
+
+objectDetector=ml5.objectDetector('cocossd',modelLoaded);
+
+document.getElementById("status").innerHTML="Status: Detecting Objects ";
+
+
+}
+
+function draw() {
+    image(img,0,0,740,520);
+
+    if(status!="")
+    {
+      for ( i = 0; i < objects.length; i++) {
+        document.getElementById("status").innerHTML="Status : Detecting objects"
+        fill("#FF0000");
+        stroke("#FF0000") ;
+        percent=floor(objects[i].confidence*100);
+        text(objects[i].label+" "+percent+"% ",objects[i].x+30, objects[i].y+70);
+        noFill();
+        rect(objects[i].x+30,objects[i].y+70,objects[i].width,objects[i].height);
+      }
+  
   }
+   
+
+ 
+}
+
+function modelLoaded() {
+  console.log("Model Loaded Successfully");
+  status=true;
+  objectDetector.detect(img,gotResult);
+}
+
+function gotResult(error,results){
+if (error)
+{
+    console.error(error);
+}
+else
+{
+console.log(results);
+objects = results;
+}
+}
   </script>
 
 </body>
